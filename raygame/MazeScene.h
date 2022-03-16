@@ -37,7 +37,7 @@ public:
 	};
 
 	static const int WIDTH = 28;
-	static const int HEIGHT = 31;
+	static const int HEIGHT = 32;
 	static const int TILE_SIZE = 25;
 
 public:
