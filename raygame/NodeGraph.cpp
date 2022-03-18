@@ -42,26 +42,63 @@ void sortFScore(DynamicArray<NodeGraph::Node*>& nodes)
 	}
 }
 
+void sortGScore(DynamicArray<NodeGraph::Node*>& nodes)
+{
+	NodeGraph::Node* key = nullptr;
+	int j = 0;
+
+	for (int i = 1; i < nodes.getLength(); i++) {
+		key = nodes[i];
+		j = i - 1;
+		while (j >= 0 && nodes[j]->gScore > key->gScore) {
+			nodes[j + 1] = nodes[j];
+			j--;
+		}
+
+		nodes[j + 1] = key;
+	}
+}
+
 DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
+	//Creats a List for the currently list being identified
 	DynamicArray<NodeGraph::Node*> openList;
+	//The Nodes that have already been identified and been processed 
 	DynamicArray<NodeGraph::Node*> closedList;
+	//adds start to the open list
 	openList.addItem(start);
 
-	NodeGraph::Node* currentNode = openList[0];
+	
+	//While the open list has a node . . . 
+	while (openList.getLength() > 0) {
+		
+		//Sorts what currently in the list of nodes 
+		sortGScore(openList);
 
-	while (openList.getLength() <= 0) {
-		for (int i = 0; i < openList.getLength(); i++)
+		//Sets the current node to be the first node in the open list 
+		NodeGraph::Node* currentNode = openList[0];
+
+		//Removes the node thats currently being processed from the open list
+		openList.remove(currentNode);
+
+		//Adds that node 
+		closedList.addItem(currentNode);
+
+		if (currentNode == goal)
+			return reconstructPath(start, goal);
+		for (int i = 0; i < currentNode->edges.getLength(); i++)
 		{
-			if (openList[i]->edges.getLength())
-			{
+			currentNode->edges[i].target->previous = currentNode;
 
-			}
+			currentNode->edges[i].target->gScore = currentNode->gScore + 1;
+
+			if(!(closedList.contains(currentNode->edges[i].target)))
+				openList.addItem(currentNode->edges[i].target);
 		}
 	}
+
+	return reconstructPath(start, goal);
 	
-	
-	return DynamicArray<NodeGraph::Node*>();
 	//Insert algorithm here
 }
 
