@@ -4,7 +4,7 @@
 #include "Engine.h"
 #include <iostream>
 
-void MoveComponent::update(float deltaTime)
+void MoveComponent::fixedUpdate(float deltaTime)
 {
 	//Add the new velocity to the old position to get the new position
 	MathLibrary::Vector2 newPosition = getOwner()->getTransform()->getLocalPosition() + getVelocity() * deltaTime;

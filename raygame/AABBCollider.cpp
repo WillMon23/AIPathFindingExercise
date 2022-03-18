@@ -2,6 +2,8 @@
 #include "CircleCollider.h"
 #include "Actor.h"
 #include "Transform2D.h"
+#include "Player.h"
+#include <algorithm>
 
 AABBCollider::AABBCollider(Actor* owner) : Collider::Collider(owner, ColliderType::BOX)
 {
@@ -56,7 +58,29 @@ bool AABBCollider::checkCollisionAABB(AABBCollider* collider)
 		collider->getTop() <= getBottom() &&
 		getLeft() <= collider->getRight() &&
 		getTop() <= collider->getBottom())
+	{
+		//find collision normal
+		int left = abs(collider->getRight() - getLeft());
+		int right = abs(collider->getLeft() - getRight());
+		int top = abs(collider->getBottom() - getTop());
+		int bottom = abs(getBottom() - collider->getTop());
+		int arr[] = { left, right, top, bottom };
+
+		std::pair<int*, int*> minMax = std::minmax_element(std::begin(arr), std::end(arr));
+		int min = *(minMax.first);
+		if (min == left)
+			setCollisionNormal({ -1,0 });
+		else if (min == right)
+			setCollisionNormal({ 1,0 });
+		else if (min == top)
+			setCollisionNormal({ 0,-1 });
+		else if (min == bottom)
+			setCollisionNormal({ 0, 1 });
+
 		return true;
+	}
+
+
 
 	return false;
 }

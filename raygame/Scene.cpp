@@ -136,17 +136,7 @@ void Scene::update(float deltaTime)
         m_actors.getItem(i)->update(deltaTime);
     }
 
-    //Checks collision for all actors
-    for (int i = 0; i < m_actors.getLength(); i++)
-    {
-        for (int j = 0; j < m_actors.getLength(); j++)
-        {
-            if (!m_actors[i]->getActive() || m_actors[i]->getStatic()) continue;
 
-            if (m_actors.getItem(i)->checkForCollision(m_actors.getItem(j)) && j != i && m_actors.getItem(j)->getStarted() && m_actors[j]->getActive())
-                m_actors.getItem(i)->onCollision(m_actors.getItem(j));
-        }
-    }
 }
 
 void Scene::updateUI(float deltaTime)
@@ -160,6 +150,27 @@ void Scene::updateUI(float deltaTime)
             m_UIElements.getItem(i)->start();
 
         m_UIElements.getItem(i)->update(deltaTime);
+    }
+}
+
+void Scene::fixedUpdate(float fixedDeltaTime)
+{
+    for (int i = 0; i < m_actors.getLength(); i++)
+    {
+        if (m_actors[i]->getActive())
+            m_actors[i]->fixedUpdate(fixedDeltaTime);
+    }
+
+    //Checks collision for all actors
+    for (int i = 0; i < m_actors.getLength(); i++)
+    {
+        for (int j = 0; j < m_actors.getLength(); j++)
+        {
+            if (!m_actors[i]->getActive() || m_actors[i]->getStatic()) continue;
+
+            if (m_actors.getItem(i)->checkForCollision(m_actors.getItem(j)) && j != i && m_actors.getItem(j)->getStarted() && m_actors[j]->getActive())
+                m_actors.getItem(i)->onCollision(m_actors.getItem(j));
+        }
     }
 }
 

@@ -1,9 +1,10 @@
 #include "Agent.h"
 #include "MoveComponent.h"
 #include "SteeringComponent.h"
+#include "Engine.h"
 
 float maxSpeedRef = 0;
-Agent::Agent(float x, float y, const char* name, float maxSpeed, float maxForce) : Actor(x ,y, name)
+Agent::Agent(float x, float y, const char* name, float maxSpeed, float maxForce) : Actor(x, y, name)
 {
 	setMaxForce(maxForce);
 	maxSpeedRef = maxSpeed;
@@ -18,9 +19,9 @@ void Agent::start()
 	m_moveComponent->setUpdateFacing(true);
 }
 
-void Agent::update(float deltaTime)
+void Agent::fixedUpdate(float deltaTime)
 {
-	Actor::update(deltaTime);
+	Actor::fixedUpdate(deltaTime);
 	//Get all force being applied from steering behaviours
 	for (int i = 0; i < m_steeringComponents.getLength(); i++)
 	{
@@ -34,7 +35,7 @@ void Agent::update(float deltaTime)
 	}
 
 	//Apply force to velocity
-	getMoveComponent()->setVelocity(getMoveComponent()->getVelocity() + m_force * deltaTime);
+	applyForce(m_force);
 }
 
 void Agent::onAddComponent(Component* component)
@@ -42,4 +43,9 @@ void Agent::onAddComponent(Component* component)
 	SteeringComponent* steeringComponent = dynamic_cast<SteeringComponent*>(component);
 	if (steeringComponent)
 		m_steeringComponents.addItem(steeringComponent);
+}
+
+void Agent::applyForce(MathLibrary::Vector2 force)
+{
+	m_moveComponent->setVelocity((m_moveComponent->getVelocity() + force));
 }

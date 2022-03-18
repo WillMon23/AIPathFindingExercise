@@ -63,7 +63,6 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	
 	return DynamicArray<NodeGraph::Node*>();
 	//Insert algorithm here
-	
 }
 
 void NodeGraph::drawGraph(Node* start)

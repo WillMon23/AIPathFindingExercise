@@ -1,4 +1,6 @@
 #pragma once
+#include <Vector2.h>
+
 enum ColliderType
 {
 	CIRCLE,
@@ -25,6 +27,7 @@ public:
 	/// Gets the type of this collider
 	/// </summary>
 	ColliderType getColliderType() { return m_type; }
+	MathLibrary::Vector2 getCollisionNormal() { return m_collisionNormal; }
 
 	/// <summary>
 	/// Checks if the collider overlaps another
@@ -37,8 +40,12 @@ public:
 	virtual bool checkCollisionAABB(AABBCollider* collider) { return false; }
 	virtual void draw() {}
 
+protected:
+	void setCollisionNormal(MathLibrary::Vector2 normal) { m_collisionNormal = normal; }
+
 private:
 	Actor* m_owner;
 	ColliderType m_type;
+	MathLibrary::Vector2 m_collisionNormal;
 };
 

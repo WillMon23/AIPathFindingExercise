@@ -132,6 +132,15 @@ void Actor::update(float deltaTime)
     }
 }
 
+void Actor::fixedUpdate(float fixedDeltaTime)
+{
+    for (int i = 0; i < m_componentCount; i++)
+    {
+        if (m_components[i]->getEnabled())
+            m_components[i]->fixedUpdate(fixedDeltaTime);
+    }
+}
+
 void Actor::draw()
 {
     for (int i = 0; i < m_componentCount; i++)

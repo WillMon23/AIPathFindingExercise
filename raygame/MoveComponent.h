@@ -18,7 +18,7 @@ public:
 	/// Set the current speed and direction of this actor
 	/// </summary>
 	/// <param name="velocity">The new velocity of this actor</param>
-	void setVelocity(MathLibrary::Vector2 velocity) { m_velocity = velocity; }
+	void setVelocity(MathLibrary::Vector2 velocity) { m_lastVelocity = m_velocity;  m_velocity = velocity; }
 
 	/// <summary>
 	/// Get the maximum magnitude of this actors velocity vector
@@ -35,10 +35,12 @@ public:
 	void setMaxSpeed(float maxSpeed) { m_maxSpeed = maxSpeed; }
 
 	//Inherited from component class
-	void update(float deltaTime) override;
+	void fixedUpdate(float deltaTime) override;
 
 private:
 	MathLibrary::Vector2 m_velocity;
+	MathLibrary::Vector2 m_lastVelocity;
+	MathLibrary::Vector2 m_acceleration;
 	float m_maxSpeed;
 	bool m_updateFacing;
 };

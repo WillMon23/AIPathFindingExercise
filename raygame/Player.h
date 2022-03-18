@@ -1,14 +1,14 @@
 #pragma once
-#include "Actor.h"
+#include "Agent.h"
 class InputComponent;
 class MoveComponent;
 class SpriteComponent;
 
 class Player :
-	public Actor
+	public Agent
 {
 public:
-	Player(float x, float y, const char* name) : Actor(x, y, name) {}
+	Player(float x, float y, const char* name, float maxForce, float maxSpeed) : Agent(x, y, name, maxForce, maxSpeed) {}
 
 	void start() override;
 	void update(float deltaTime) override;
@@ -16,8 +16,7 @@ public:
 	void onCollision(Actor* actor) override;
 
 private:
-	InputComponent* m_inputComponent;
-	MoveComponent* m_moveComponent;
 	SpriteComponent* m_spriteComponent;
+	InputComponent* m_input;
 };
 

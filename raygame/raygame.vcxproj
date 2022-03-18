@@ -163,6 +163,7 @@
     <ClCompile Include="NodeGraph.cpp" />
     <ClCompile Include="PathfindComponent.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerMoveComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SeekComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="NodeGraph.h" />
     <ClInclude Include="PathfindComponent.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerMoveComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SeekComponent.h" />
     <ClInclude Include="SpriteComponent.h" />

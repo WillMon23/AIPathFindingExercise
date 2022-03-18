@@ -11,7 +11,7 @@ bool Engine::m_applicationShouldClose = false;
 Scene** Engine::m_scenes = new Scene*;
 int Engine::m_sceneCount = 0;
 int Engine::m_currentSceneIndex = 0;
-
+const float Engine::m_fixedTimeStep = 0.01f;
 
 Engine::Engine()
 {
@@ -41,6 +41,11 @@ void Engine::update(float deltaTime)
 	m_scenes[m_currentSceneIndex]->updateUI(deltaTime);
 }
 
+void Engine::fixedUpdate(float fixedDeltaTime)
+{
+	m_scenes[m_currentSceneIndex]->fixedUpdate(fixedDeltaTime);
+}
+
 void Engine::draw()
 {
 	BeginDrawing();
@@ -61,6 +66,7 @@ void Engine::end()
 
 void Engine::run()
 {
+	float accumulatedTime = 0;
 	//Create window and start scene
 	start();
 
@@ -69,9 +75,16 @@ void Engine::run()
 	{
 		//Calculate deltatime
 		float deltaTime = RAYLIB_H::GetFrameTime();
+		accumulatedTime += deltaTime;
 
 		//Update scene
 		update(deltaTime);
+
+		if (accumulatedTime >= m_fixedTimeStep)
+		{
+			fixedUpdate(m_fixedTimeStep);
+			accumulatedTime -= m_fixedTimeStep;
+		}
 
 		//Draw current scene
 		draw();

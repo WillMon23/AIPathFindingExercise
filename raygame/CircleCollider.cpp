@@ -26,6 +26,8 @@ bool CircleCollider::checkCollisionCircle(CircleCollider* otherCollider)
     //Find the distance between the circle centers
     float distance = (otherCollider->getOwner()->getTransform()->getWorldPosition() - getOwner()->getTransform()->getWorldPosition()).getMagnitude();
 
+    setCollisionNormal((otherCollider->getOwner()->getTransform()->getWorldPosition() - getOwner()->getTransform()->getWorldPosition()).getNormalized());
+
     return distance <= combinedRadii;
 }
 
@@ -54,6 +56,8 @@ bool CircleCollider::checkCollisionAABB(AABBCollider* otherCollider)
 
     //Get the distance between the circle and the closest point found
     float distanceFromClosestPoint = (getOwner()->getTransform()->getWorldPosition() - closestPoint).getMagnitude();
+
+    setCollisionNormal((otherCollider->getOwner()->getTransform()->getWorldPosition() - closestPoint).getNormalized());
 
     //Return true if the distance is less than the collision radius
     if (distanceFromClosestPoint <= m_collisionRadius)

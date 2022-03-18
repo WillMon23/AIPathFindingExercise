@@ -68,6 +68,7 @@ public:
 
     virtual void update(float deltaTime);
     virtual void updateUI(float deltaTime);
+    virtual void fixedUpdate(float fixedDeltaTime);
 
     virtual void draw();
     virtual void drawUI();

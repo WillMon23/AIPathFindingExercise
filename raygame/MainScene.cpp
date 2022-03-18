@@ -10,13 +10,11 @@
 
 void MainScene::start()
 {
-	Player* player = new Player(200, 50, "Player");
+	Player* player = new Player(200, 50, "Player", 100, 50);
 	player->getTransform()->setScale({ 50,50 });
 	player->addComponent(new SpriteComponent("Images/player.png"));
-	MoveComponent* playerMove = player->addComponent<MoveComponent>();
-	playerMove->setUpdateFacing(true);
 
-	Agent* agent = new Agent(0,0, "Agent", 200, 500);
+	Agent* agent = new Agent(0, 0, "Agent", 200, 500);
 	agent->getTransform()->setScale({ 50,50 });
 	agent->addComponent(new SpriteComponent("Images/enemy.png"));
 

@@ -29,6 +29,7 @@ public:
 	//Functions called by actor class
 	virtual void start() { m_started = true; }
 	virtual void update(float deltaTime) {}
+	virtual void fixedUpdate(float fixedDeltaTime) {}
 	virtual void draw() {}
 	virtual void end() {}
 	virtual void onCollision(Actor* other) {}

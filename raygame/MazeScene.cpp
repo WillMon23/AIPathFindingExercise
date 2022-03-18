@@ -52,7 +52,7 @@ Maze::Maze()
 	};
 
 
-	m_player = new Player(0, 0, "Player");
+	m_player = new Player(0, 0, "Player", 2000, 50);
 	//Generate the map
 	generate(map);
 }

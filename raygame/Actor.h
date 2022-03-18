@@ -74,7 +74,7 @@ public:
     /// </summary>
     /// <param name="component">The component to remove from the array</param>
     /// <returns>False if the component is not in the array</returns>
-    
+
     bool removeComponent(Component* component);
 
     /// <summary>
@@ -95,6 +95,8 @@ public:
     /// </summary>
     /// <param name="deltaTime">The time that has passed from the previous frame to the current</param>
     virtual void update(float deltaTime);
+
+    virtual void fixedUpdate(float fixedDeltaTime);
 
     /// <summary>
     /// Called every loop to update on screen visuals

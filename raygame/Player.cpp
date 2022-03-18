@@ -1,21 +1,23 @@
 #include "Player.h"
-#include "InputComponent.h"
+#include "PlayerMoveComponent.h"
 #include "MoveComponent.h"
 #include "SpriteComponent.h"
 #include "Transform2D.h"
 #include "MazeScene.h"
 #include "Wall.h"
 #include "AABBCollider.h"
+#include "Agent.h"
+#include "Collider.h"
+#include "InputComponent.h";
+
 void Player::start()
 {
-	Actor::start();
+	Agent::start();
 
-	m_inputComponent = dynamic_cast<InputComponent*>(addComponent(new InputComponent()));
-	m_moveComponent = dynamic_cast<MoveComponent*>(addComponent(new MoveComponent()));
-	m_moveComponent->setMaxSpeed(10);
+	addComponent<PlayerMoveComponent>();
 	m_spriteComponent = dynamic_cast<SpriteComponent*>(addComponent(new SpriteComponent("Images/player.png")));
 	getTransform()->setScale({ Maze::TILE_SIZE, Maze::TILE_SIZE });
-
+	m_input = getComponent<InputComponent>();
 	setCollider(new AABBCollider(Maze::TILE_SIZE, Maze::TILE_SIZE, this));
 	//Set spawn point
 	//Set move speed
@@ -24,11 +26,10 @@ void Player::start()
 
 void Player::update(float deltaTime)
 {
+	Agent::update(deltaTime);
 
-	MathLibrary::Vector2 moveDirection = m_inputComponent->getMoveAxis();
-
-	m_moveComponent->setVelocity(moveDirection * 200);
-	Actor::update(deltaTime);
+	if (!m_input->getMoveAxis().getMagnitude())
+		getMoveComponent()->setVelocity({ 0,0 });
 }
 
 void Player::onCollision(Actor* other)
@@ -42,8 +43,7 @@ void Player::onCollision(Actor* other)
 			roundf(position.y / Maze::TILE_SIZE) * Maze::TILE_SIZE
 		};
 		tilePosition = tilePosition - halfTile;
-		getTransform()->setWorldPostion(getTransform()->getWorldPosition() + (m_moveComponent->getVelocity().getNormalized() * -1 * Maze::TILE_SIZE / 2.0f));
-
-		m_moveComponent->setVelocity({ 0, 0 });
+		//getTransform()->setWorldPostion(getTransform()->getWorldPosition() - getMoveComponent()->getVelocity().getNormalized() * -.05f);
+		applyForce(getCollider()->getCollisionNormal() * -1 * getMoveComponent()->getVelocity().getMagnitude());
 	}
 }
