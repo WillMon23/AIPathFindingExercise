@@ -51,7 +51,13 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	NodeGraph::Node* currentNode = openList[0];
 
 	while (openList.getLength() <= 0) {
-		
+		for (int i = 0; i < openList.getLength(); i++)
+		{
+			if (openList[i]->edges.getLength())
+			{
+
+			}
+		}
 	}
 	
 	
