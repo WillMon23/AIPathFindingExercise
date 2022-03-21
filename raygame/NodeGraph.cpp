@@ -9,7 +9,7 @@ DynamicArray<NodeGraph::Node*> reconstructPath(NodeGraph::Node* start, NodeGraph
 
 	while (currentNode != start->previous)
 	{
-		currentNode->color = 0xFFFF00;
+		currentNode->color = 0xFFFF00FF;
 		path.insert(currentNode, 0);
 		currentNode = currentNode->previous;
 	}
@@ -71,36 +71,62 @@ void NodeGraph::drawGraph(Node* start)
 	drawConnectedNodes(start, drawnList);
 }
 
-void NodeGraph::drawNode(Node* node, int color)
+void NodeGraph::drawNode(Node* node, float size)
 {
 	static char buffer[10];
 	sprintf_s(buffer, "%.0f", node->gScore);
 
 	//Draw the circle for the outline
-	DrawCircle((int)node->position.x, (int)node->position.y, 16, GetColor(color));
+	DrawCircle((int)node->position.x, (int)node->position.y, size + 1, GetColor(node->color));
 	//Draw the inner circle
-	DrawCircle((int)node->position.x, (int)node->position.y, 14, BLACK);
+	DrawCircle((int)node->position.x, (int)node->position.y, size, GetColor(node->color));
 	//Draw the text
-	DrawText(buffer, (int)node->position.x, (int)node->position.y, 24, RAYWHITE);
+	DrawText(buffer, (int)node->position.x, (int)node->position.y, .8f, BLACK);
 }
 
 void NodeGraph::drawConnectedNodes(Node* node, DynamicArray<Node*>& drawnList)
 {
 	drawnList.addItem(node);
+	if (node->walkable)
+		drawNode(node, 8);
 
 	for (int i = 0; i < node->edges.getLength(); i++)
 	{
 		Edge e = node->edges[i];
-		//Draw the Edge
-		DrawLine((int)node->position.x, (int)node->position.y, (int)e.target->position.x, (int)e.target->position.y, WHITE);
-		//Draw the cost
-		MathLibrary::Vector2 costPos = { (node->position.x + e.target->position.x) / 2, (node->position.y + e.target->position.y) / 2 };
-		static char buffer[10];
-		sprintf_s(buffer, "%.0f", e.cost);
-		DrawText(buffer, (int)costPos.x, (int)costPos.y, 16, RAYWHITE);
+		////Draw the Edge
+		//DrawLine((int)node->position.x, (int)node->position.y, (int)e.target->position.x, (int)e.target->position.y, WHITE);
+		////Draw the cost
+		//MathLibrary::Vector2 costPos = { (node->position.x + e.target->position.x) / 2, (node->position.y + e.target->position.y) / 2 };
+		//static char buffer[10];
+		//sprintf_s(buffer, "%.0f", e.cost);
+		//DrawText(buffer, (int)costPos.x, (int)costPos.y, 16, RAYWHITE);
 		//Draw the target node
 		if (!drawnList.contains(e.target)) {
 			drawConnectedNodes(e.target, drawnList);
+		}
+	}
+}
+
+void NodeGraph::resetGraphScore(Node * start)
+{
+	DynamicArray<Node*> resetList = DynamicArray<Node*>();
+	resetConnectedNodes(start, resetList);
+}
+
+void NodeGraph::resetConnectedNodes(Node* node, DynamicArray<Node*>& resetList)
+{
+	resetList.addItem(node);
+
+	for (int i = 0; i < node->edges.getLength(); i++)
+	{
+		node->edges[i].target->gScore = 0;
+		node->edges[i].target->hScore = 0;
+		node->edges[i].target->fScore = 0;
+		node->edges[i].target->color = 0xFFFFFFFF;
+
+		//Draw the target node
+		if (!resetList.contains(node->edges[i].target)) {
+			resetConnectedNodes(node->edges[i].target, resetList);
 		}
 	}
 }
