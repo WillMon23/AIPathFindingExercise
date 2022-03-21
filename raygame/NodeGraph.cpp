@@ -58,6 +58,7 @@ void sortGScore(DynamicArray<NodeGraph::Node*>& nodes)
 	}
 }
 
+
 DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
 	//Creats a List for the currently list being identified
@@ -77,8 +78,11 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	//While the open list has a node . . . 
 	while (openList.getLength() > 0) {
 
-		//Sorts what currently in the list of nodes 
-		sortGScore(openList);
+		////Sorts the open List based Off the Nodes G - Score
+		//sortGScore(openList);
+
+		//Sorts The Open List Based OFf the Nodes F - Score
+		sortFScore(openList);
 
 		NodeGraph::Node* currentNode = openList[0];
 		
@@ -98,6 +102,10 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 				Node* currentEdge = currentNode->edges[i].target;
 
 				currentEdge->gScore = currentNode->edges[i].cost + currentNode->gScore;
+				
+				currentEdge->hScore = abs(currentEdge->position.x - goal->position.x) + abs(currentEdge->position.y - goal->position.y);
+
+				currentEdge->fScore = currentEdge->gScore + currentEdge->hScore;
 
 				//If the node on the edge already exists in the closed
 				if (!closedList.contains(currentEdge))
