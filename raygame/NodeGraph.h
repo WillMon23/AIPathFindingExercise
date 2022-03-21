@@ -19,8 +19,8 @@ namespace NodeGraph
 		float gScore;
 		float hScore;
 		float fScore;
-
-		int color = 0xFFFFFFFFF;
+		bool walkable = true;
+		unsigned int color = 0xFFFFFFFFF;
 
 		Node* previous;
 
@@ -31,7 +31,10 @@ namespace NodeGraph
 
 	void drawGraph(Node* start);
 
-	void drawNode(Node* node, int color = 0xFFFFFFFFF);
+	void drawNode(Node* node, float size = 14);
 
 	void drawConnectedNodes(Node* node, DynamicArray<Node*>& drawnList);
+
+	void resetGraphScore(Node* start);
+	void resetConnectedNodes(Node* node, DynamicArray<Node*>& resetList);
 }
