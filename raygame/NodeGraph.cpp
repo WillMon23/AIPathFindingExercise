@@ -98,32 +98,37 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 			//Itarates through the nodes on the edges of the current node 
 			for (int i = 0; i < currentNode->edges.getLength(); i++)
 			{
-				//Current edge being Looked At 
-				Node* currentEdge = currentNode->edges[i].target;
+				//Current target being Looked At 
+				Node* currentTarget = currentNode->edges[i].target;
 
-				currentEdge->gScore = currentNode->edges[i].cost + currentNode->gScore;
+				//Callcualtes edges the G Score by ading the edges cost and the currentNodes g Score  
+				currentTarget->gScore = currentNode->edges[i].cost + currentNode->gScore;
 				
-				currentEdge->hScore = abs(currentEdge->position.x - goal->position.x) + abs(currentEdge->position.y - goal->position.y);
+				//Calculates the h Score by getting the manhattan distance of the current edge and the goal 
+				currentTarget->hScore = abs(currentTarget->position.x - goal->position.x) + abs(currentTarget->position.y - goal->position.y);
 
-				currentEdge->fScore = currentEdge->gScore + currentEdge->hScore;
+				//Calculates the f score by adding the g Score and the h Score together 
+				currentTarget->fScore = currentTarget->gScore + currentTarget->hScore;
 
 				//If the node on the edge already exists in the closed
-				if (!closedList.contains(currentEdge))
+				if (!closedList.contains(currentTarget))
 				{
 					//sets this target edge to be the current node 
-					currentEdge->previous = currentNode;
+					currentTarget->previous = currentNode;
 					//Sets the hex color value to be that of (RED)
-					currentEdge->color = 0xFF00FFFF;
-					//currentEdge->gScore = currentNode->gScore;
+					currentTarget->color = 0xFB0F0FFF;
 				}
 				else
+					// Skips any node thats has already been calculated
 					continue;
 
-					openList.addItem(currentEdge);
+				//Addeds the current edge target
+				openList.addItem(currentTarget);
 			}
 		}
-
+		//If the current Node is that of the goal 
 		if (currentNode == goal)
+			//Just return the reconstructed path
 			return reconstructPath(start, goal);
 	}
 
