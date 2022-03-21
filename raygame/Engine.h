@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include <Vector2.h>
 #include <cmath>
-#include "ActorArray.h"
+#include "DynamicArray.h"
 class Camera2D;
 
 static class Engine

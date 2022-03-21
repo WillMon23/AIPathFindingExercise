@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-#include "ActorArray.h"
+#include "DynamicArray.h"
 #include <Vector2.h>
 
 class SteeringComponent;

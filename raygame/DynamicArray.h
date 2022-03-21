@@ -46,6 +46,7 @@ inline DynamicArray<T>::DynamicArray(const DynamicArray<T>& other)
 
 template<typename T>
 inline DynamicArray<T>::~DynamicArray() {
+	if (m_count <= 0) return;
 	delete[] m_items;
 	m_count = 0;
 	m_items = nullptr;

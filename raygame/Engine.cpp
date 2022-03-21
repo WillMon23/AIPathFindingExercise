@@ -26,7 +26,7 @@ void Engine::start()
 {
 	//Initialize window
 	InitWindow(getScreenWidth(), getScreenHeight(), "Intro To C++");
-	SetTargetFPS(0);
+	SetTargetFPS(60);
 
 	//Start the scene
 	m_currentSceneIndex = addScene(new Maze());
