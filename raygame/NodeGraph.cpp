@@ -68,7 +68,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	reconstructPath(start, goal);
 
 	//Sets the current node to be the first node in the open list 
-	NodeGraph::Node* currentNode = start;
+	/*NodeGraph::Node* currentNode = start;*/
 
 	//adds start to the open list
 	openList.addItem(start);
@@ -78,46 +78,53 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 
 		//Sorts what currently in the list of nodes 
 		sortGScore(openList);
-		currentNode = openList[0];
+
+		NodeGraph::Node* currentNode = openList[0];
 		
 		float gScore = currentNode->gScore;
 
 		//Removes the node thats currently being processed from the open list
 		openList.remove(currentNode);
 
-		//Adds that current node to the closed list 
-		closedList.addItem(currentNode);
-		
-		//Itarates through the nodes on the edges of the current node 
-		for (int i = 0; i < currentNode->edges.getLength(); i++)
-		{
-			//Current edge being Looked At 
-			Node* currentEdge = currentNode->edges[i].target;
+		if (!closedList.contains(currentNode))
+		{//Adds that current node to the closed list 
+			closedList.addItem(currentNode);
 
-			currentEdge->gScore += currentNode->edges[i].cost;
-
-			//If the node on the edge already exists in the closed
-			if (!(closedList.contains(currentEdge)) || currentEdge->walkable)
+			//Itarates through the nodes on the edges of the current node 
+			for (int i = 0; i < currentNode->edges.getLength(); i++)
 			{
-				//sets this target edge to be the current node 
-				currentEdge->previous = currentNode;
-
-				currentEdge->gScore = currentNode->gScore;
+				//Current edge being Looked At 
+				Node* currentEdge = currentNode->edges[i].target;
 
 				//Sets the hex color value to be that of (RED)
 				currentEdge->color = 0xFF0000FF;
+
+				currentEdge->gScore = currentNode->edges[i].cost + currentNode->gScore;
+
+				//If the node on the edge already exists in the closed
+				if (!closedList.contains(currentEdge))
+				{
+					//sets this target edge to be the current node 
+					currentEdge->previous = currentNode;
+
+					currentEdge->gScore = currentNode->gScore;
+
+				}
+
+				else
+					continue;
+				if (!openList.contains(currentNode))
+					//Other wise it aadds it to the open list
+					openList.addItem(currentEdge);
 			}
-
-			else
-				continue;
-
-			//Other wise it aadds it to the open list
-			openList.addItem(currentEdge);
 		}
+
+		if (currentNode == goal)
+			return reconstructPath(start, goal);
 	}
 
 	//Retruns What Happens in the Reconstruction path function 
-	return reconstructPath(currentNode, goal);
+	return reconstructPath(start, goal);
 }
 
 void NodeGraph::drawGraph(Node* start)
