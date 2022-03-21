@@ -1,6 +1,6 @@
 #pragma once
 #include <Vector2.h>
-#include "ActorArray.h"
+#include "DynamicArray.h"
 
 namespace NodeGraph
 {
