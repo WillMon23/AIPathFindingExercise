@@ -66,6 +66,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 	DynamicArray<NodeGraph::Node*> closedList;
 
 	reconstructPath(start, goal);
+	
 
 	//Sets the current node to be the first node in the open list 
 	/*NodeGraph::Node* currentNode = start;*/
@@ -90,11 +91,16 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		{//Adds that current node to the closed list 
 			closedList.addItem(currentNode);
 
+			NodeGraph::Node* smallestG = start;
+
 			//Itarates through the nodes on the edges of the current node 
 			for (int i = 0; i < currentNode->edges.getLength(); i++)
 			{
 				//Current edge being Looked At 
 				Node* currentEdge = currentNode->edges[i].target;
+
+				if (smallestG->gScore > currentEdge->gScore)
+					smallestG = currentEdge;
 
 				//Sets the hex color value to be that of (RED)
 				currentEdge->color = 0xFF0000FF;
@@ -108,11 +114,11 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 					currentEdge->previous = currentNode;
 
 					currentEdge->gScore = currentNode->gScore;
-
 				}
-
 				else
 					continue;
+
+
 				if (!openList.contains(currentNode))
 					//Other wise it aadds it to the open list
 					openList.addItem(currentEdge);
