@@ -51,6 +51,8 @@ public:
 	int getColor() { return m_color; }
 	void setColor(int color) { m_color = color; }
 
+	void onEnabled() override { m_needPath = true; }
+
 protected:
 	virtual MathLibrary::Vector2 findDestination();
 

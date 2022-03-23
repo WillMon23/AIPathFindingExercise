@@ -23,8 +23,14 @@ public:
 	/// </summary>
 	bool getStarted() { return m_started; }
 
+	/// <summary>
+	/// Get whether or not this component is being updated and drawn
+	/// </summary>
 	bool getEnabled() { return m_enabled; }
-	void setEnabled(bool value) { m_enabled = value; }
+	/// <summary>
+	/// Set whether or not this component is being updated and drawn
+	/// </summary>
+	void setEnabled(bool value);
 
 	//Functions called by actor class
 	virtual void start() { m_started = true; }
@@ -34,6 +40,15 @@ public:
 	virtual void end() {}
 	virtual void onCollision(Actor* other) {}
 	virtual void onDestroy() {};
+
+	/// <summary>
+	/// Called when this component is enabled after being disabled
+	/// </summary>
+	virtual void onEnabled() {};
+	/// <summary>
+	/// Called when this component is disabled after being enabled
+	/// </summary>
+	virtual void onDisabled() {};
 
 private:
 	Actor* m_owner;

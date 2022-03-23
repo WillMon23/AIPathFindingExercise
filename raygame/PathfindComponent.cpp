@@ -13,7 +13,7 @@ void PathfindComponent::start()
 void PathfindComponent::update(float deltaTime)
 {
 	//Don't update if disabled or no target
-	if (!getEnabled() || !m_target)
+	if (!m_target)
 		return;
 
 	//Find the positions and tiles of the owner and target
